@@ -10,7 +10,7 @@ and
 
 as well as helpers to do that from any provided date or time.
 
-I needed this, but taking into account business hours/days and holidays.
+I needed this, but taking into account business hours/days/minutes and holidays.
 
 == Usage
 * install the gem
@@ -48,6 +48,9 @@ I needed this, but taking into account business hours/days and holidays.
     1.business_day.ago
     4.business_days.ago
     8.business_days.ago
+
+    30.business_minutes.ago
+    15.business_minutes.from_now
 
     # and we can do it from any Date or Time object.
     my_birthday = Date.parse("August 4th, 1969")
@@ -99,12 +102,8 @@ This code does depend on ActiveSupport, but nothing else within rails.  Even the
 
 == Timezone support
 This gem strives to be timezone-agnostic.  Due to some complications in the handling of timezones in the built in Time class, and some complexities (bugs?) in the timeWithZone class, this was harder than expected... but here's the idea:
-
-* When you configure the gem with something like 9:00am as the start time,
-  this is agnostic of time zone.
-* When you are dealing with a Time or TimeWithZone class, the timezone is
-  preserved and the beginning and end of times for the business day are
-  referenced in that time zone.
+ * When you configure the gem with something like 9:00am as the start time, this is agnostic of time zone.
+ * When you are dealing with a Time or TimeWithZone class, the timezone is preserved and the beginning and end of times for the business day are referenced in that time zone.
  
 This can lead to some wierd looking effects if, say, you are in the Eastern time zone but doing everything in UTC times...  Your business day will appear to start and end at 9:00 and 5:00 UTC.  If this seems perplexing to you, I can almost guarantee you are in over your head with timezones in other ways too, this is just the first place you encountered it.  Timezone relative date handling gets more and more complicated every time you look at it and takes a long time before it starts to seem simple again.  I'm hoping Arild and I write some good blog entries on the subject at http://blog.codesherpas.com.
 
@@ -127,11 +126,8 @@ This can lead to some wierd looking effects if, say, you are in the Eastern time
 * Send me a pull request. Bonus points for topic branches.
 
 == TODO
-
-* if it doesn't pollute the logic too much, I'd like to vary the days counted as 'business days'.  Bakers often
-  don't work on Mondays, for instance.  I'd do it in something like this:
-  
-    BusinessTime::Config.work_week = [:tue, :wed, :thur, :fri, :sat]
+* I'd like to return ActiveSupport::TimeWithZone just like the equivalent ActiveSupport helpers do.
+* if it doesn't pollute the logic too much, I'd like to vary the days counted as 'business days'.  Bakers often don't work on Mondays, for instance.
 
 * Arild has pointed out that there may be some logical inconsistencies
   regaring the beginning_of_workday and end_of workday times not actually

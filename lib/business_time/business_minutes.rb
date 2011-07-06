@@ -1,8 +1,8 @@
 module BusinessTime
 
-  class BusinessHours
-    def initialize(hours)
-      @hours = hours
+  class BusinessMinutes
+    def initialize(minutes)
+      @minutes = minutes
     end
 
     def ago
@@ -15,9 +15,9 @@ module BusinessTime
 
     def after(time)
       after_time = Time.roll_forward(time)
-      # Step through the hours, skipping over non-business hours
-      @hours.times do
-        after_time = after_time + 1.hour
+      # Step through the minutes, skipping over non-business hours
+      @minutes.times do
+        after_time = after_time + 1.minute
 
         # Ignore hours before opening and after closing
         if (after_time > Time.end_of_workday(after_time))
@@ -35,9 +35,9 @@ module BusinessTime
 
     def before(time)
       before_time = Time.roll_forward(time)
-      # Step through the hours, skipping over non-business hours
-      @hours.times do
-        before_time = before_time - 1.hour
+      # Step through the minutes, skipping over non-business hours
+      @minutes.times do
+        before_time = before_time - 1.minute
 
         # Ignore hours before opening and after closing
         if (before_time < Time.beginning_of_workday(before_time))
